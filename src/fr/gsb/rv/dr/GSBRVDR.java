@@ -6,6 +6,7 @@
 package fr.gsb.rv.dr;
 
 import fr.gsb.rv.dr.entites.Visiteur;
+import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
@@ -15,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,12 +42,12 @@ import javafx.scene.input.KeyCode;
  */
 public class GSBRVDR extends Application {
 //    Visiteur visiteur = new Visiteur("OB0041", "Oumayma", "BELLILI"); //TEST 2-4
-    Visiteur visiteur = null; //TEST 2-8
+    Visiteur visiteur = null; //TEST 2-8 et TEST 3-4
     boolean session = Session.estOuverte();
 
     @Override
     public void start(Stage primaryStage) throws ConnexionException, SQLException {
-        Connection connexion = ConnexionBD.getConnexion(); //TEST 2-8
+/*        Connection connexion = ConnexionBD.getConnexion(); //TEST 2-8
         ResultSet res;
         String req = "SELECT vis_nom, vis_prenom, vis_matricule, vis_mot_de_passe FROM Visiteur where vis_matricule = ?";
         PreparedStatement pstmt = (PreparedStatement) connexion.prepareStatement(req);
@@ -52,7 +55,7 @@ public class GSBRVDR extends Application {
         res = pstmt.executeQuery();
         while (res.next()) {
             visiteur = new Visiteur(res.getString(3), res.getString(1), res.getString(2));
-        }
+        }*/
         MenuBar barreMenus = new MenuBar();
         Menu menuFichier = new Menu("Fichier");
         MenuItem itemSeConnecter = new MenuItem("Se connecter");
@@ -79,6 +82,11 @@ public class GSBRVDR extends Application {
 
         itemSeConnecter.setOnAction(actionEvent -> {
             root.setCenter(new Label("Se connecter"));
+            try {   //TEST 3.4
+                visiteur = ModeleGsbRv.seConnecter("a131", "azerty");
+            } catch (ConnexionException ex) {
+                Logger.getLogger(GSBRVDR.class.getName()).log(Level.SEVERE, null, ex);
+            }
             Session.ouvrir(visiteur);
             session = Session.estOuverte();
             primaryStage.setTitle("GSB-RV-DR " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom());
@@ -111,10 +119,10 @@ public class GSBRVDR extends Application {
             }
         });
         itemConsulter.setOnAction(actionEvent -> {
-//            root.setCenter(new Label("[Rapports] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4 et 2-8
+            root.setCenter(new Label("[Rapports] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
         });
         itemHesitants.setOnAction(actionEvent -> {
-//            root.setCenter(new Label("[Praticiens] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4 et 2-8
+            root.setCenter(new Label("[Praticiens] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
         });
 
         Scene scene = new Scene(root, 500, 400);

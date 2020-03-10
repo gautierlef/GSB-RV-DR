@@ -35,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCode;
+import javafx.util.Pair;
 
 /**
  *
@@ -82,18 +83,31 @@ public class GSBRVDR extends Application {
 
         itemSeConnecter.setOnAction(actionEvent -> {
             root.setCenter(new Label("Se connecter"));
-            try {   //TEST 3.4
-                visiteur = ModeleGsbRv.seConnecter("a131", "azerty");
-            } catch (ConnexionException ex) {
-                Logger.getLogger(GSBRVDR.class.getName()).log(Level.SEVERE, null, ex);
+            VueConnexion vue = new VueConnexion();
+            Optional<Pair<String, String>> reponse = vue.showAndWait();
+            if (reponse.isPresent()) {
+                try {   //TEST 3.4
+                    String[] resultat = reponse.get().toString().split("=");
+                    visiteur = ModeleGsbRv.seConnecter(resultat[0], resultat[1]);
+                } catch (ConnexionException ex) {
+                    Logger.getLogger(GSBRVDR.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (visiteur != null) {
+                    Session.ouvrir(visiteur);
+                    session = Session.estOuverte();
+                    primaryStage.setTitle("GSB-RV-DR " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom());
+                    itemSeConnecter.setDisable(session);
+                    itemSeDeconnecter.setDisable(!session);
+                    menuRapports.setDisable(!session);
+                    menuPraticiens.setDisable(!session);
+                } else {
+                    Alert dlgNok = new Alert (Alert.AlertType.ERROR);
+                    dlgNok.setTitle ("Erreur");
+                    dlgNok.setHeaderText("Connexion annulée :");
+                    dlgNok.setContentText("Matricule ou mot de passe incorrecte!");
+                    dlgNok.showAndWait();
+                }
             }
-            Session.ouvrir(visiteur);
-            session = Session.estOuverte();
-            primaryStage.setTitle("GSB-RV-DR " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom());
-            itemSeConnecter.setDisable(session);
-            itemSeDeconnecter.setDisable(!session);
-            menuRapports.setDisable(!session);
-            menuPraticiens.setDisable(!session);
         });
         itemSeDeconnecter.setOnAction(actionEvent -> {
             root.setCenter(new Label("Se déconnecter"));
@@ -109,7 +123,7 @@ public class GSBRVDR extends Application {
             Alert alert = new Alert (Alert.AlertType.CONFIRMATION);
             ButtonType btnOui = new ButtonType ("Oui");
             ButtonType btnNon = new ButtonType ("Non");
-            alert.setTitle ("Quitter");
+            alert.setTitle("Quitter");
             alert.setHeaderText("Demande de confirmation");
             alert.setContentText("Êtes vous sûr de vouloir quitter l'application?");
             alert.getButtonTypes().setAll(btnNon, btnOui);

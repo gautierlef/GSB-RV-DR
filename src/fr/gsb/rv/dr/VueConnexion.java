@@ -22,7 +22,6 @@ import javafx.util.Pair;
  * @author developpeur
  */
 public class VueConnexion extends Dialog<Pair<String, String>> {
-
     public VueConnexion() {
         ButtonType btnConfirmer = new ButtonType ("Confirmer");
         ButtonType btnAnnuler = new ButtonType ("Annuler");
@@ -58,5 +57,4 @@ public class VueConnexion extends Dialog<Pair<String, String>> {
             return null;
         });
     }
-    
 }

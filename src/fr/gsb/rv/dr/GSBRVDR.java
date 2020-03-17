@@ -35,6 +35,8 @@ import javafx.stage.Stage;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
 
 /**
@@ -57,6 +59,16 @@ public class GSBRVDR extends Application {
         while (res.next()) {
             visiteur = new Visiteur(res.getString(3), res.getString(1), res.getString(2));
         }*/
+        PanneauPraticiens vuePraticiens = new PanneauPraticiens();
+        vuePraticiens.setStyle("-fx-background-color: white;");
+        PanneauRapports vueRapports = new PanneauRapports();
+        vueRapports.setStyle("-fx-background-color: white;");
+        PanneauAccueil vueAccueil = new PanneauAccueil();
+        vueAccueil.setStyle("-fx-background-color: white;");
+        StackPane panneaux = new StackPane();
+        panneaux.getChildren().add(vueAccueil);
+        panneaux.getChildren().add(vueRapports);
+        panneaux.getChildren().add(vuePraticiens);
         MenuBar barreMenus = new MenuBar();
         Menu menuFichier = new Menu("Fichier");
         MenuItem itemSeConnecter = new MenuItem("Se connecter");
@@ -80,9 +92,12 @@ public class GSBRVDR extends Application {
         menuPraticiens.setDisable(!session);
         BorderPane root = new BorderPane();
         root.setTop(barreMenus);
-
+        vueAccueil.setVisible(true);
+        vuePraticiens.setVisible(false);
+        vueRapports.setVisible(false);
+        root.setCenter(panneaux);
+//        root.setCenter(new Label("Se connecter"));
         itemSeConnecter.setOnAction(actionEvent -> {
-            root.setCenter(new Label("Se connecter"));
             VueConnexion vue = new VueConnexion();
             Optional<Pair<String, String>> reponse = vue.showAndWait();
             if (reponse.isPresent()) {
@@ -110,7 +125,9 @@ public class GSBRVDR extends Application {
             }
         });
         itemSeDeconnecter.setOnAction(actionEvent -> {
-            root.setCenter(new Label("Se déconnecter"));
+            vueRapports.setVisible(false);
+            vueAccueil.setVisible(true);
+            vuePraticiens.setVisible(false);
             Session.fermer();
             session = Session.estOuverte();
             primaryStage.setTitle("GSB-RV-DR");
@@ -133,12 +150,17 @@ public class GSBRVDR extends Application {
             }
         });
         itemConsulter.setOnAction(actionEvent -> {
-            root.setCenter(new Label("[Rapports] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
+//            root.setCenter(new Label("[Rapports] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
+            vueRapports.setVisible(true);
+            vueAccueil.setVisible(false);
+            vuePraticiens.setVisible(false);
         });
         itemHesitants.setOnAction(actionEvent -> {
-            root.setCenter(new Label("[Praticiens] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
+//            root.setCenter(new Label("[Praticiens] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
+            vueRapports.setVisible(false);
+            vueAccueil.setVisible(false);
+            vuePraticiens.setVisible(true);
         });
-
         Scene scene = new Scene(root, 500, 400);
         primaryStage.setTitle("GSB-RV-DR");
         primaryStage.setScene(scene);
@@ -151,5 +173,4 @@ public class GSBRVDR extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

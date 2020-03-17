@@ -28,6 +28,6 @@ public class ModeleGsbRv {
         }
         catch(SQLException e) {
             return null;
-        } 
+        }
     }
 }

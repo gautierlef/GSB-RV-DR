@@ -5,16 +5,22 @@
  */
 package fr.gsb.rv.dr;
 
+import fr.gsb.rv.dr.entites.Praticien;
 import fr.gsb.rv.dr.entites.Visiteur;
 import fr.gsb.rv.dr.modeles.ModeleGsbRv;
 import fr.gsb.rv.dr.technique.ConnexionBD;
 import fr.gsb.rv.dr.technique.ConnexionException;
 import fr.gsb.rv.dr.technique.Session;
+import fr.gsb.rv.dr.utilitaires.ComparateurCoefConfiance;
+import fr.gsb.rv.dr.utilitaires.ComparateurCoefNotoriete;
+import fr.gsb.rv.dr.utilitaires.ComparateurDateVisite;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,6 +65,22 @@ public class GSBRVDR extends Application {
         while (res.next()) {
             visiteur = new Visiteur(res.getString(3), res.getString(1), res.getString(2));
         }*/
+        List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+        for (Praticien unPraticien : praticiens) {
+            System.out.println(unPraticien);
+        }
+        Collections.sort(praticiens, new ComparateurCoefConfiance());
+        for (Praticien unPraticien : praticiens) {
+            System.out.println(unPraticien);
+        }
+        Collections.sort(praticiens, new ComparateurCoefNotoriete());
+        for (Praticien unPraticien : praticiens) {
+            System.out.println(unPraticien);
+        }
+        Collections.sort(praticiens, new ComparateurDateVisite());
+        for (Praticien unPraticien : praticiens) {
+            System.out.println(unPraticien);
+        }
         PanneauPraticiens vuePraticiens = new PanneauPraticiens();
         vuePraticiens.setStyle("-fx-background-color: white;");
         PanneauRapports vueRapports = new PanneauRapports();

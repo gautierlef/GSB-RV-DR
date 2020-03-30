@@ -102,6 +102,11 @@ public class PanneauPraticiens extends Pane {
         root.getChildren().add(tvPraticiens);
         root.setStyle("-fx-background-color : white");
         pane.getChildren().add(root);
+        try {
+            rafraichir();
+        } catch (ConnexionException | SQLException ex) {
+            Logger.getLogger(PanneauPraticiens.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public Pane getPane() {

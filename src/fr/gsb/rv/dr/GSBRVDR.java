@@ -65,7 +65,7 @@ public class GSBRVDR extends Application {
         while (res.next()) {
             visiteur = new Visiteur(res.getString(3), res.getString(1), res.getString(2));
         }*/
-        List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
+        /*List<Praticien> praticiens = ModeleGsbRv.getPraticiensHesitants();
         for (Praticien unPraticien : praticiens) {
             System.out.println(unPraticien);
         }
@@ -83,17 +83,17 @@ public class GSBRVDR extends Application {
         Collections.sort(praticiens, new ComparateurDateVisite());
         for (Praticien unPraticien : praticiens) {
             System.out.println(unPraticien);
-        }
+        }*/
         PanneauPraticiens vuePraticiens = new PanneauPraticiens();
-        vuePraticiens.setStyle("-fx-background-color: white;");
+        vuePraticiens.getPane().setStyle("-fx-background-color: white;");
         PanneauRapports vueRapports = new PanneauRapports();
-        vueRapports.setStyle("-fx-background-color: white;");
+        vueRapports.getPane().setStyle("-fx-background-color: white;");
         PanneauAccueil vueAccueil = new PanneauAccueil();
-        vueAccueil.setStyle("-fx-background-color: white;");
+        vueAccueil.getPane().setStyle("-fx-background-color: white;");
         StackPane panneaux = new StackPane();
-        panneaux.getChildren().add(vueAccueil);
-        panneaux.getChildren().add(vueRapports);
-        panneaux.getChildren().add(vuePraticiens);
+        panneaux.getChildren().add(vueAccueil.getPane());
+        panneaux.getChildren().add(vueRapports.getPane());
+        panneaux.getChildren().add(vuePraticiens.getPane());
         MenuBar barreMenus = new MenuBar();
         Menu menuFichier = new Menu("Fichier");
         MenuItem itemSeConnecter = new MenuItem("Se connecter");
@@ -117,9 +117,9 @@ public class GSBRVDR extends Application {
         menuPraticiens.setDisable(!session);
         BorderPane root = new BorderPane();
         root.setTop(barreMenus);
-        vueAccueil.setVisible(true);
-        vuePraticiens.setVisible(false);
-        vueRapports.setVisible(false);
+        vueAccueil.getPane().setVisible(true);
+        vuePraticiens.getPane().setVisible(false);
+        vueRapports.getPane().setVisible(false);
         root.setCenter(panneaux);
 //        root.setCenter(new Label("Se connecter"));
         itemSeConnecter.setOnAction(actionEvent -> {
@@ -150,9 +150,9 @@ public class GSBRVDR extends Application {
             }
         });
         itemSeDeconnecter.setOnAction(actionEvent -> {
-            vueRapports.setVisible(false);
-            vueAccueil.setVisible(true);
-            vuePraticiens.setVisible(false);
+            vueRapports.getPane().setVisible(false);
+            vueAccueil.getPane().setVisible(true);
+            vuePraticiens.getPane().setVisible(false);
             Session.fermer();
             session = Session.estOuverte();
             primaryStage.setTitle("GSB-RV-DR");
@@ -176,15 +176,15 @@ public class GSBRVDR extends Application {
         });
         itemConsulter.setOnAction(actionEvent -> {
 //            root.setCenter(new Label("[Rapports] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
-            vueRapports.setVisible(true);
-            vueAccueil.setVisible(false);
-            vuePraticiens.setVisible(false);
+            vueRapports.getPane().setVisible(true);
+            vueAccueil.getPane().setVisible(false);
+            vuePraticiens.getPane().setVisible(false);
         });
         itemHesitants.setOnAction(actionEvent -> {
 //            root.setCenter(new Label("[Praticiens] " + Session.getVisiteur().getNom() + " " + Session.getVisiteur().getPrenom())); //TEST 2-4, 2-8 et 3-4
-            vueRapports.setVisible(false);
-            vueAccueil.setVisible(false);
-            vuePraticiens.setVisible(true);
+            vueRapports.getPane().setVisible(false);
+            vueAccueil.getPane().setVisible(false);
+            vuePraticiens.getPane().setVisible(true);
         });
         Scene scene = new Scene(root, 500, 400);
         primaryStage.setTitle("GSB-RV-DR");

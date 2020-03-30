@@ -14,10 +14,17 @@ import javafx.scene.layout.VBox;
  * @author developpeur
  */
 public class PanneauRapports extends Pane {
+    private Pane pane = new Pane();
+    
     public PanneauRapports() {
-        Label labelRapports = new Label("Rapports");
-        VBox vBox = new VBox();
-        vBox.getChildren().add(labelRapports);
-        this.getChildren().add(vBox);
+        VBox grid = new VBox();
+        Label label = new Label("Rapports");
+        grid.getChildren().add(label);
+        grid.setStyle("-fx-background-color : white"); 
+        pane.getChildren().add(grid);
+    }
+    
+    public Pane getPane() {
+        return pane;
     }
 }

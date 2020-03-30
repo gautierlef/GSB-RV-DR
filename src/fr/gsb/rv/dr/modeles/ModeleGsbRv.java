@@ -48,7 +48,7 @@ public class ModeleGsbRv {
             List<Praticien> praticiensHesitants = new ArrayList<Praticien>();
             while (resultat.next()) {
                 Praticien praticien = new Praticien(resultat.getString("pra_num"), resultat.getString("pra_nom"), resultat.getString("pra_ville"), Float.parseFloat(resultat.getString("pra_coefnotoriete")), Date.valueOf(resultat.getString("date")).toLocalDate(), Integer.parseInt(resultat.getString("rap_coef_confiance")));
-                System.out.println(praticien);
+//                System.out.println(praticien);
                 praticiensHesitants.add(praticien);
             }
             requetePreparee.close();

@@ -70,13 +70,16 @@ public class GSBRVDR extends Application {
             System.out.println(unPraticien);
         }
         Collections.sort(praticiens, new ComparateurCoefConfiance());
+        System.out.print("\n");
         for (Praticien unPraticien : praticiens) {
             System.out.println(unPraticien);
         }
+        System.out.print("\n");
         Collections.sort(praticiens, new ComparateurCoefNotoriete());
         for (Praticien unPraticien : praticiens) {
             System.out.println(unPraticien);
         }
+        System.out.print("\n");
         Collections.sort(praticiens, new ComparateurDateVisite());
         for (Praticien unPraticien : praticiens) {
             System.out.println(unPraticien);

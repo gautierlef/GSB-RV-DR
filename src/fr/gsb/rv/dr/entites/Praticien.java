@@ -14,11 +14,11 @@ public class Praticien {
     private String numero;
     private String nom;
     private String ville;
-    private int coefNotoriete;
+    private float coefNotoriete;
     private LocalDate dateDerniereVisite;
     private int dernierCoefConfiance;
 
-    public Praticien(String numero, String nom, String ville, int coefNotoriete, LocalDate dateDerniereVisite, int dernierCoefConfiance) {
+    public Praticien(String numero, String nom, String ville, float coefNotoriete, LocalDate dateDerniereVisite, int dernierCoefConfiance) {
         this.numero = numero;
         this.nom = nom;
         this.ville = ville;
@@ -51,7 +51,7 @@ public class Praticien {
         this.ville = ville;
     }
 
-    public int getCoefNotoriete() {
+    public float getCoefNotoriete() {
         return coefNotoriete;
     }
 
